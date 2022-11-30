@@ -8,7 +8,7 @@
 
 *You should make the edits to this readme in your IDE, not on the GitHub website*
 
-* author0 name - netid
+* Daniel Biondolillo - xtz3mx
 * author1 name - netid
 * author2 name - netid
 

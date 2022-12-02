@@ -4,31 +4,34 @@ import java.util.Scanner;
 
 public class LoginMenu {
 
-    private Student user;
     private Scanner scanner;
-    private ReviewService reviewService;
+    private Student user;
     private boolean loginSuccess;
+    private boolean sessionActive;
 
     public LoginMenu(Scanner scanner) {
         this.scanner = scanner;
     }
 
     private void initialize() {
-        scanner = new Scanner(System.in);
-        reviewService = new ReviewService();
+        user = null;
         loginSuccess = false;
+        sessionActive = true;
+        System.out.println("Current User: " + user);
     }
 
     public void run() {
         initialize();
         String input = "";
-        while(!loginSuccess) {
+        while(!loginSuccess && !input.equalsIgnoreCase("quit")) {
             input = getLoginMenuInput();
             if (isValidLoginMenuNumber(input)) {
                 loginSuccess = executePromptForInput(Integer.parseInt(input));
             }
         }
-        scanner.close();
+        if (input.equalsIgnoreCase("quit")) {
+            sessionActive = false;
+        }
     }
 
     private String getLoginMenuInput(){
@@ -90,7 +93,15 @@ public class LoginMenu {
         return true;
     }
 
+    public boolean getLoginSuccess() {
+        return loginSuccess;
+    }
+
     public Student getUser() {
         return this.user;
+    }
+
+    public boolean isSessionActive() {
+        return sessionActive;
     }
 }

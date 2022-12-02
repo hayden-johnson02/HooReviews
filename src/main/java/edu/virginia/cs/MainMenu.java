@@ -7,27 +7,30 @@ public class MainMenu {
     private Scanner scanner;
     private ReviewService reviewService;
     private boolean loggedIn;
+    private boolean sessionActive;
 
     public MainMenu(Scanner scanner) {
         this.scanner = scanner;
     }
 
     private void initialize() {
-        scanner = new Scanner(System.in);
         reviewService = new ReviewService();
-        loggedIn = false;
+        loggedIn = true;
+        sessionActive = true;
     }
 
     public void run() {
         initialize();
         String input = "";
-        while(!loggedIn) {
+        while(loggedIn  && !input.equalsIgnoreCase("quit")) {
             input = getMenuChoice();
-            if (isValidLoginMenuNumber(input)) {
+            if (isValidMenuChoice(input)) {
                 executePromptForInput(Integer.parseInt(input));
             }
         }
-        scanner.close();
+        if (input.equalsIgnoreCase("quit")) {
+            sessionActive = false;
+        }
     }
 
     private String getMenuChoice(){
@@ -42,7 +45,7 @@ public class MainMenu {
         return scanner.next().strip();
     }
 
-    private boolean isValidLoginMenuNumber(String input) {
+    private boolean isValidMenuChoice(String input) {
         try {
             int choice = Integer.parseInt(input);
             return 1 <= choice && choice <= 3;
@@ -57,7 +60,7 @@ public class MainMenu {
             case 2 -> seeReviews();
             case 3 -> logout();
             default -> throw new IllegalArgumentException("Invalid Entry choice: " + choice);
-        };
+        }
     }
 
     private void logout() {
@@ -65,13 +68,29 @@ public class MainMenu {
         loggedIn = false;
     }
 
-    private void seeReviews() {
-    }
-
     private void submitReview() {
+        Course course = getCourseFromInput();
+        if (course != null) {
+            // TODO: Get review as string from user and write to database
+            // Printing for now to validate course object
+            System.out.println(course.getDepartment() + " " + course.getCatalogNumber());
+            System.out.println("Write review for course: ");
+            String review = scanner.next();
+            System.out.println(review);
+        }
     }
 
-    private Course getCourseName() {
+    private void seeReviews() {
+        Course course = getCourseFromInput();
+        if (course != null) {
+            // TODO: Query database for course reviews and print - print error message if course not in database
+
+            // Printing for now to validate course object
+            System.out.println(course.getDepartment() + " " + course.getCatalogNumber());
+        }
+    }
+
+    private Course getCourseFromInput() {
         String input = getCourseInput();
         if (isValidCourse(input)) {
             String[] courseName = input.split(" ");
@@ -81,7 +100,6 @@ public class MainMenu {
         }
         else {
             System.out.println("Invalid course name. Courses have format of 2-4 capital letters followed by 4 digits.");
-            getMenuChoice();
         }
         return null;
     }
@@ -91,16 +109,13 @@ public class MainMenu {
         if (courseName.length != 2) {
             return false;
         }
-        else if (isValidDepartment(courseName[0]) && isValidCatalogNumber(courseName[1])) {
-            return true;
-        }
-        return false;
+        else return isValidDepartment(courseName[0]) && isValidCatalogNumber(courseName[1]);
     }
 
     private boolean isValidCatalogNumber(String catalogNumber) {
         if (catalogNumber.length() == 4) {
             for (int i=0; i<catalogNumber.length(); i++) {
-                if((int) catalogNumber.charAt(i) < 0 || (int) catalogNumber.charAt(i) > 9) {
+                if((int) catalogNumber.charAt(i) > 9) {
                     return false;
                 }
             }
@@ -129,21 +144,20 @@ public class MainMenu {
         System.out.println("""
                 HooReviews: Main
                 
-                Enter a valid course name: 
+                Enter a valid course name:
                 """);
-        return scanner.next().strip();
+        return scanner.next();
     }
-
-    public Student getUser() {
-        return this.user;
-    }
-    public void setUser(Student user) {
+    public void signInUser(Student user) {
         this.user = user;
+        loggedIn = true;
     }
 
     public boolean isLoggedIn() {
-        return isLoggedIn();
+        return loggedIn;
     }
+
+    public boolean isSessionActive(){return sessionActive;}
 
 
 

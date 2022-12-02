@@ -7,11 +7,9 @@ import java.util.Scanner;
 public class CommandLineUI {
 
     private Scanner scanner;
-    private Student user;
     private LoginMenu loginMenu;
-
     private MainMenu mainMenu;
-    private boolean loggedIn;
+    private boolean sessionActive;
 
     public static void main(String[] args) {
         CommandLineUI clui = new CommandLineUI();
@@ -20,22 +18,21 @@ public class CommandLineUI {
 
     private void initialize() {
         scanner = new Scanner(System.in);
-        loginMenu = new LoginMenu(new Scanner(System.in));
+        loginMenu = new LoginMenu(scanner);
         mainMenu = new MainMenu(scanner);
+        sessionActive = true;
     }
 
     private void run() {
         initialize();
-        String input = "";
-        while(!input.equalsIgnoreCase("quit")) {
-            if (!loggedIn) {
+        while(sessionActive) {
+            if (!loginMenu.getLoginSuccess()) {
                 loginMenu.run();
-                user = loginMenu.getUser();
-                mainMenu.setUser(user);
+                sessionActive = loginMenu.isSessionActive();
+                mainMenu.signInUser(loginMenu.getUser());
             }
-            else {
+            else if (mainMenu.isLoggedIn()){
                 mainMenu.run();
-                loggedIn = mainMenu.isLoggedIn();
             }
         }
         scanner.close();

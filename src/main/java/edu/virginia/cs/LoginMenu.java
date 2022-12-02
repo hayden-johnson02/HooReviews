@@ -6,7 +6,7 @@ public class LoginMenu {
 
     private Scanner scanner;
     private Student user;
-    private boolean loginSuccess;
+    private boolean loggedIn;
     private boolean sessionActive;
 
     public LoginMenu(Scanner scanner) {
@@ -15,7 +15,7 @@ public class LoginMenu {
 
     private void initialize() {
         user = null;
-        loginSuccess = false;
+        loggedIn = false;
         sessionActive = true;
         System.out.println("Current User: " + user);
     }
@@ -23,12 +23,13 @@ public class LoginMenu {
     public void run() {
         initialize();
         String input = "";
-        while(!loginSuccess && !input.equalsIgnoreCase("quit")) {
+        while(!loggedIn && !input.equalsIgnoreCase("quit")) {
             input = getLoginMenuInput();
             if (isValidLoginMenuNumber(input)) {
-                loginSuccess = executePromptForInput(Integer.parseInt(input));
+                executePromptForInput(Integer.parseInt(input));
             }
         }
+        // If quit is typed at any point, indicate session is no longer active to close app
         if (input.equalsIgnoreCase("quit")) {
             sessionActive = false;
         }
@@ -54,15 +55,15 @@ public class LoginMenu {
         }
     }
 
-    private boolean executePromptForInput(int choice) {
-        return switch(choice) {
+    private void executePromptForInput(int choice) {
+        switch(choice) {
             case 1 -> attemptExistingUserLogin();
             case 2 -> attemptNewUserLogin();
             default -> throw new IllegalArgumentException("Invalid Entry choice: " + choice);
-        };
+        }
     }
 
-    private boolean attemptNewUserLogin() {
+    private void attemptNewUserLogin() {
         System.out.print("New Login Name: ");
         String newLoginName = scanner.next();
         System.out.print("New Password: ");
@@ -71,30 +72,31 @@ public class LoginMenu {
         String confirmPassword = scanner.next();
 
         if (newPassword.equals(confirmPassword)) {
-            // create new Student object and add student to table
+            // TODO: create new Student object and add student to table
+
             user = new Student(newLoginName, newPassword);
-            return true;
+            loggedIn = true;
         }
         else {
-            System.out.println("\nPasswords did not match.");
-            return false;
+            System.out.println("\nPasswords did not match. Try again.");
         }
     }
 
-    private boolean attemptExistingUserLogin() {
+    private void attemptExistingUserLogin() {
         System.out.print("Login Name: ");
         String loginName = scanner.next();
         System.out.print("Password: ");
         String password = scanner.next();
 
-        // Search database for loginName and confirm password matches
-        // Proceed to main menu
+        // TODO: Search database for loginName and confirm password matches
+        // if (isValidUser) -> update current user
+        // else -> Print login error message
         user = new Student(loginName, password);
-        return true;
+        loggedIn = true;
     }
 
-    public boolean getLoginSuccess() {
-        return loginSuccess;
+    public boolean isLoggedIn() {
+        return loggedIn;
     }
 
     public Student getUser() {

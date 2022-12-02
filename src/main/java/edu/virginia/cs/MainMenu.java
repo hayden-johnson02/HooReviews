@@ -6,8 +6,8 @@ public class MainMenu {
     private Student user;
     private Scanner scanner;
     private ReviewService reviewService;
-    private boolean loggedIn;
     private boolean sessionActive;
+    private boolean loggedOut;
 
     public MainMenu(Scanner scanner) {
         this.scanner = scanner;
@@ -15,14 +15,14 @@ public class MainMenu {
 
     private void initialize() {
         reviewService = new ReviewService();
-        loggedIn = true;
         sessionActive = true;
+        loggedOut = false;
     }
 
     public void run() {
         initialize();
         String input = "";
-        while(loggedIn  && !input.equalsIgnoreCase("quit")) {
+        while(!loggedOut && !input.equalsIgnoreCase("quit")) {
             input = getMenuChoice();
             if (isValidMenuChoice(input)) {
                 executePromptForInput(Integer.parseInt(input));
@@ -65,7 +65,7 @@ public class MainMenu {
 
     private void logout() {
         user = null;
-        loggedIn = false;
+        loggedOut = true;
     }
 
     private void submitReview() {
@@ -141,23 +141,18 @@ public class MainMenu {
     }
 
     private String getCourseInput() {
-        System.out.println("""
+        System.out.print("""
                 HooReviews: Main
                 
-                Enter a valid course name:
-                """);
+                Enter a valid course name:\040""");
         return scanner.next();
-    }
-    public void signInUser(Student user) {
-        this.user = user;
-        loggedIn = true;
-    }
-
-    public boolean isLoggedIn() {
-        return loggedIn;
     }
 
     public boolean isSessionActive(){return sessionActive;}
+    public boolean isLoggedIn() {
+        return !loggedOut;
+    }
+    public Student getUser() {return this.user;}
 
 
 

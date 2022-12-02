@@ -10,6 +10,8 @@ public class CommandLineUI {
     private LoginMenu loginMenu;
     private MainMenu mainMenu;
     private boolean sessionActive;
+    private Student user;
+    private boolean loggedIn;
 
     public static void main(String[] args) {
         CommandLineUI clui = new CommandLineUI();
@@ -21,22 +23,29 @@ public class CommandLineUI {
         loginMenu = new LoginMenu(scanner);
         mainMenu = new MainMenu(scanner);
         sessionActive = true;
+        user = null;
+        loggedIn = false;
     }
 
     private void run() {
         initialize();
         while(sessionActive) {
-            if (!loginMenu.getLoginSuccess()) {
+            if (!loggedIn) {
                 loginMenu.run();
                 sessionActive = loginMenu.isSessionActive();
-                mainMenu.signInUser(loginMenu.getUser());
+                loggedIn = loginMenu.isLoggedIn();
+                user = loginMenu.getUser();
             }
-            else if (mainMenu.isLoggedIn()){
+            else {
                 mainMenu.run();
+                sessionActive = mainMenu.isSessionActive();
+                loggedIn = mainMenu.isLoggedIn();
+                sessionActive = mainMenu.isSessionActive();
+                user = mainMenu.getUser();
             }
         }
         scanner.close();
-
+        System.exit(0);
     }
 
 

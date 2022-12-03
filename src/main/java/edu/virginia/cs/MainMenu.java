@@ -21,7 +21,6 @@ public class MainMenu {
         businessLogic = new BusinessLogic();
         sessionActive = true;
         loggedOut = false;
-        System.out.println("\nUser: " + user.getUsername());
     }
 
     public void run(Student user) {
@@ -39,6 +38,7 @@ public class MainMenu {
     }
 
     private String getMenuChoice(){
+        System.out.println("\nUser: " + user.getUsername());
         System.out.println("""
                 HooReviews: Main
                 
@@ -77,7 +77,7 @@ public class MainMenu {
         Course course = getCourseFromInput();
         if (course != null) {
             // TODO: Get review as string from user and write to database
-            System.out.print("Write review for " + course.toString() + ": ");
+            System.out.print("Write review for " + course + ": ");
             String text = scanner.next();
             System.out.print("Enter rating (1-5): ");
             int rating = scanner.nextInt();

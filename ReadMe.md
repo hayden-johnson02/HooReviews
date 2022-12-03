@@ -10,7 +10,7 @@
 
 * Daniel Biondolillo - xtz3mx
 * Hayden Johnson - cxy6nx
-* author2 name - netid
+* Surya Shanmugaselvam - amy6zx
 
 ## Description
 

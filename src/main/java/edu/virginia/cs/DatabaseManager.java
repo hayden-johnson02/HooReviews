@@ -77,6 +77,16 @@ public interface DatabaseManager {
      */
     void addCourses(List<Course> courseList);
 
+
+    /**
+     * Returns the course object when given its name.
+     *
+     *
+     * @throws IllegalStateException if students, courses, or reviews table doesn't exist
+     * @throws IllegalStateException if the Manager hasn't connected yet
+     * @throws IllegalArgumentException if the Course doesn't exist
+     */
+    Course getCourseByName();
     /**
      * Return all the reviews for a given course.
      *

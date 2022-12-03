@@ -1,8 +1,6 @@
 package edu.virginia.cs;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Course {
@@ -24,7 +22,7 @@ public class Course {
 
     public boolean isEmpty() {return reviews.isEmpty();}
 
-    public int size() {return reviews.size();}
+    public int reviewCount() {return reviews.size();}
 
     public Review getReview(Student student) {return reviews.get(student);}
 
@@ -40,6 +38,10 @@ public class Course {
     public int getCatalogNumber() {return catalogNumber;}
 
     public void setCatalogNumber(int catalogNumber) {this.catalogNumber = catalogNumber;}
+
+    public String toString() {
+        return getDepartment() + " " + getCatalogNumber();
+    }
 
 
 }

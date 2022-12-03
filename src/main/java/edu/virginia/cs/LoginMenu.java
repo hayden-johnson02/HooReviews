@@ -17,7 +17,6 @@ public class LoginMenu {
         user = null;
         loggedIn = false;
         sessionActive = true;
-        System.out.println("Current User: " + user);
     }
 
     public void run() {
@@ -64,17 +63,16 @@ public class LoginMenu {
     }
 
     private void attemptNewUserLogin() {
-        System.out.print("New Login Name: ");
-        String newLoginName = scanner.next();
+        System.out.print("New Username: ");
+        String newUsername = scanner.next();
         System.out.print("New Password: ");
         String newPassword = scanner.next();
         System.out.print("Confirm Password: ");
         String confirmPassword = scanner.next();
 
         if (newPassword.equals(confirmPassword)) {
-            // TODO: create new Student object and add student to table
-
-            user = new Student(newLoginName, newPassword);
+            // TODO: create new Student object and add to database
+            user = new Student(newUsername, newPassword);
             loggedIn = true;
         }
         else {
@@ -83,27 +81,23 @@ public class LoginMenu {
     }
 
     private void attemptExistingUserLogin() {
-        System.out.print("Login Name: ");
+        System.out.print("Username: ");
         String loginName = scanner.next();
         System.out.print("Password: ");
         String password = scanner.next();
 
         // TODO: Search database for loginName and confirm password matches
-        // if (isValidUser) -> update current user
-        // else -> Print login error message
-        user = new Student(loginName, password);
+        /* if (businessLogic.isExistingUser(username, password)) {
+            user = businessLogic.getStudentByName(username)
+        }
+        else {
+            System.out.println("Invalid username or password")
+         }
+         */
         loggedIn = true;
     }
 
-    public boolean isLoggedIn() {
-        return loggedIn;
-    }
-
-    public Student getUser() {
-        return this.user;
-    }
-
-    public boolean isSessionActive() {
-        return sessionActive;
-    }
+    public boolean isLoggedIn() {return loggedIn;}
+    public Student getUser() {return this.user;}
+    public boolean isSessionActive() {return sessionActive;}
 }

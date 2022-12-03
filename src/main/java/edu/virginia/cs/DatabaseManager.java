@@ -85,6 +85,9 @@ public interface DatabaseManager {
      * @throws IllegalStateException if students, courses, or reviews table doesn't exist
      * @throws IllegalStateException if the Manager hasn't connected yet
      */
+
+    // Add get course by string name
+
     List<Review> getCourseReviews();
 
     /**

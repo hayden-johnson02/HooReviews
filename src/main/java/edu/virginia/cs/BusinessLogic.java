@@ -16,7 +16,7 @@ public class BusinessLogic {
         // dataLayer.getCourse
     }
 
-    public boolean isExistingUser(String username) {
+    public static boolean isExistingUser(String username, String password) {
         // List tempList = dataLayer.getAllCourses
         // for (Student student : tempList) {
         //      if (student.getName == courseName) {

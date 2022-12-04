@@ -200,11 +200,12 @@ public class DatabaseManagerImpl {
                     SELECT * FROM Courses WHERE Department = "%s" AND Catalog_Number = %d;""", department, catalog_number);
             statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
-            statement.close();
             if(rs.next()) {
+                statement.close();
                 return true;
             }
             else{
+                statement.close();
                 return false;
             }
         } catch(SQLException e){
@@ -324,8 +325,7 @@ public class DatabaseManagerImpl {
             }
             return reviewList;
             } catch (SQLException e) {
-                throw new RuntimeException(e);
-                //throw new IllegalStateException("The courses or reviews table likely doesn't exist.");
+                throw new IllegalStateException("The courses or reviews table likely doesn't exist.");
             }
 
     }

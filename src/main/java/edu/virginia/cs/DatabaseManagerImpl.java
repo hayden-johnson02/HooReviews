@@ -321,7 +321,8 @@ public class DatabaseManagerImpl {
             while(rs.next()) {
                 String reviewMessage = rs.getString("textMessage");
                 int reviewScore = rs.getInt("rating");
-                reviewList.add(new ReviewMessage(reviewMessage, reviewScore));
+                String studentName = rs.getString("studentName");
+                reviewList.add(new ReviewMessage(reviewMessage, reviewScore, studentName));
             }
             return reviewList;
             } catch (SQLException e) {

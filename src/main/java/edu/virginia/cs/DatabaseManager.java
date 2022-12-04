@@ -78,6 +78,15 @@ public interface DatabaseManager {
     void addCourses(List<Course> courseList);
 
     /**
+     * Adds the info from the given review object into the database.
+     *
+     *
+     * @throws IllegalStateException if reviews table doesn't exist
+     * @throws IllegalStateException if the Manager hasn't connected yet
+     * @throws IllegalArgumentException if the review data is not correct
+     */
+    public void addReview(Review review);
+    /**
      * Return all the reviews for the given course department and catalog number. The ReviewMessage objects contain
      * the message of the review and the score given.
      *
@@ -86,7 +95,6 @@ public interface DatabaseManager {
      * @throws IllegalStateException if students, courses, or reviews table doesn't exist
      * @throws IllegalStateException if the Manager hasn't connected yet
      */
-
     List<ReviewMessage> getCourseReviews(String department, int catalog_number);
 
     /**

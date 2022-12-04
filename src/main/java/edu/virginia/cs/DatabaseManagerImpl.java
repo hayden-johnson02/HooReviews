@@ -229,6 +229,30 @@ public class DatabaseManagerImpl {
             throw new IllegalStateException("The courses or reviews table likely doesn't exist.");
         }
     }
+    public void addReview(Review review) {
+        try {
+            if (connection == null || connection.isClosed()) {
+                throw new IllegalStateException("Sorry, your connection is closed right now.");
+            }
+            String insertQuery = String.format("""
+                                insert into Reviews (StudentName, CourseDepartment, CourseCatalogNumber, textMessage, rating)
+                                    values ("%s", "%s", %d, "%s", %d);
+                                    """, review.getStudent().getUsername(),
+                    review.getCourse().getDepartment(),
+                    review.getCourse().getCatalogNumber(),
+                    review.getReviewText(),
+                    review.getRating());
+            try {
+                statement = connection.createStatement();
+                statement.executeUpdate(insertQuery);
+                statement.close();
+;            } catch(SQLException ex) {
+                throw new IllegalArgumentException("The given review has invalid data.");
+            }
+        } catch(SQLException e) {
+            throw new IllegalStateException("The reviews table likely doesn't exist.");
+        }
+    }
     public List<ReviewMessage> getCourseReviews(String department, int catalog_number) {
         try {
             if (connection == null || connection.isClosed()) {

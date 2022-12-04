@@ -87,6 +87,7 @@ public class MainMenu {
 
     private void seeReviews() {
         Course course = getCourseFromInput();
+        //System.out.println(businessLogic.isExistingCourse(course));
         if (course != null) {
             // TODO: Query database for course reviews and print - print error message if course not in database
             if (businessLogic.isExistingCourse(course) && businessLogic.courseHasReviews(course)) {

@@ -1,7 +1,6 @@
 package edu.virginia.cs;
 
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -91,7 +90,14 @@ public class MainMenu {
         if (course != null) {
             // TODO: Query database for course reviews and print - print error message if course not in database
             if (businessLogic.isExistingCourse(course) && businessLogic.courseHasReviews(course)) {
-                businessLogic.getReviewsForCourse(course);
+                List<ReviewMessage> allReviews = businessLogic.getReviewsForCourse(course);
+                int avgScore = 0;
+                for(ReviewMessage currentReview : allReviews) {
+                    System.out.println(currentReview.getMessage());
+                    avgScore += currentReview.getScore();
+                }
+                System.out.println("Course average - " + avgScore/allReviews.size());
+
             }
             else if (businessLogic.isExistingCourse(course) && !businessLogic.courseHasReviews(course)) {
                 System.out.println("This course does not have any reviews yet.\n");

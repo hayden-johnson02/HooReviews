@@ -57,7 +57,7 @@ public class DatabaseManagerImpl {
             String sqlCourses = "CREATE TABLE Courses "+
                     " (id INTEGER PRIMARY KEY AUTOINCREMENT, "+
                     " Department VARCHAR(255) not NULL, "+
-                    " Catalog_Number DOUBLE not NULL);";
+                    " Catalog_Number INTEGER not NULL);";
             statement.executeUpdate(sqlCourses);
             statement.close();
 
@@ -67,7 +67,7 @@ public class DatabaseManagerImpl {
                     " (id INTEGER PRIMARY KEY AUTOINCREMENT, "+
                     " StudentName VARCHAR(255) not NULL, "+
                     " CourseDepartment VARCHAR(255) not NULL, "+
-                    " CourseCatalogNumber DOUBLE not NULL, "+
+                    " CourseCatalogNumber INTEGER not NULL, "+
                     " textMessage VARCHAR(255) not NULL, "+
                     " rating INTEGER not NULL, "+
                     "FOREIGN KEY (StudentName) REFERENCES Students (name) ON DELETE CASCADE, "+
@@ -114,7 +114,6 @@ public class DatabaseManagerImpl {
         }
 
     }
-
     public boolean checkIfLoginExists(String username, String password) {
         try{
             if (connection == null || connection.isClosed()) {
@@ -218,7 +217,6 @@ public class DatabaseManagerImpl {
                         throw new IllegalArgumentException("There are no reviews for this course.");
                     }
                 }
-
                 try {
                     statement = connection.createStatement();
                     statement.executeUpdate(insertQueryToCourses);
@@ -231,11 +229,26 @@ public class DatabaseManagerImpl {
             throw new IllegalStateException("The courses or reviews table likely doesn't exist.");
         }
     }
-    public Course getCourseByName(String courseName) {
+    public List<ReviewMessage> getCourseReviews(String department, int catalog_number) {
+        try {
+            if (connection == null || connection.isClosed()) {
+                throw new IllegalStateException("Sorry, your connection is closed right now.");
+            }
+            List<ReviewMessage> reviewList = new ArrayList<>();
+            statement = connection.createStatement();
+            String selectReviewsQuery = "select * from Reviews where CourseDepartment = " + department +
+                    " and CourseCatalogNumber = " + catalog_number + ";";
+            ResultSet rs = statement.executeQuery(selectReviewsQuery);
+            while(rs.next()) {
+                String reviewMessage = rs.getString("textMessage");
+                int reviewScore = rs.getInt("rating");
+                reviewList.add(new ReviewMessage(reviewMessage, reviewScore));
+            }
 
-
-
-
+            return reviewList;
+            } catch (SQLException e) {
+            throw new IllegalStateException("The courses or reviews table likely doesn't exist.");
+        }
 
     }
     //used this link - https://www.baeldung.com/jdbc-check-table-exists

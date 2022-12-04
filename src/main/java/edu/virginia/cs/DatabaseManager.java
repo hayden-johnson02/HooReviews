@@ -49,23 +49,23 @@ public interface DatabaseManager {
     void addStudents(List<Student> studentList);
 
     /**
-     * Return a list of all the students in the database
-     *
-     * Returns an empty list if the students table is empty.
+     * Adds the student to the student table in the database. Returns true if successful, false if not
      *
      * @throws IllegalStateException if students table doesn't exist
      * @throws IllegalStateException if the Manager hasn't connected yet
      */
-    List<Student> getAllStudents();
+    public boolean addStudent(String name, String password);
+
 
     /**
-     * Get a specific student by their name/computing ID;
      *
-     * @throws IllegalStateException if students table doesn't exist
-     * @throws IllegalArgumentException if no student with given id name
-     * @throws IllegalStateException if the Manager hasn't connected yet
+     * Returns a boolean based on if the student currently has a username and password in the database.
+     *
+     * @throws IllegalStateException if not yet connected
+     * @throws IllegalStateException if the students table does not exist
+     *
      */
-    Student getStudentByName(String name);
+    public boolean checkIfLoginExists(String username, String password);
 
     /**
      * Adds all courses in the list to the courses section of the database
@@ -77,16 +77,18 @@ public interface DatabaseManager {
      */
     void addCourses(List<Course> courseList);
 
-
     /**
-     * Returns the course object when given its name.
+     * Return all the reviews for the given course department and catalog number. The ReviewMessage objects contain
+     * the message of the review and the score given.
      *
+     * Returns an empty list if the course has no reviews.
      *
      * @throws IllegalStateException if students, courses, or reviews table doesn't exist
      * @throws IllegalStateException if the Manager hasn't connected yet
-     * @throws IllegalArgumentException if the Course doesn't exist
      */
-    Course getCourseByName();
+
+    List<ReviewMessage> getCourseReviews(String department, int catalog_number);
+
     /**
      * Commits any changes and ends the connection.
      *

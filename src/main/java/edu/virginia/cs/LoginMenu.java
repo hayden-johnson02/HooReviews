@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class LoginMenu {
 
+    private DatabaseManagerImpl databaseManager;
     private Scanner scanner;
     private Student user;
     private boolean loggedIn;
@@ -17,11 +18,11 @@ public class LoginMenu {
         user = null;
         loggedIn = false;
         sessionActive = true;
-        System.out.println("Current User: " + user);
     }
 
     public void run() {
         initialize();
+        databaseManager = DatabaseManagerImpl.getDatabaseManager();
         String input = "";
         while(!loggedIn && !input.equalsIgnoreCase("quit")) {
             input = getLoginMenuInput();
@@ -64,18 +65,24 @@ public class LoginMenu {
     }
 
     private void attemptNewUserLogin() {
-        System.out.print("New Login Name: ");
-        String newLoginName = scanner.next();
+        System.out.print("New Username: ");
+        String newUsername = scanner.next();
         System.out.print("New Password: ");
         String newPassword = scanner.next();
         System.out.print("Confirm Password: ");
         String confirmPassword = scanner.next();
 
         if (newPassword.equals(confirmPassword)) {
-            // TODO: create new Student object and add student to table
-
-            user = new Student(newLoginName, newPassword);
+            // TODO: create new Student object and add to database
             loggedIn = true;
+            if(databaseManager.addStudent(newUsername, newPassword)){
+                user = new Student(newUsername, newPassword);
+                loggedIn = true;
+            }
+            else{
+                System.out.println("\nStudent by name "+newUsername+" already exists. Would you like to sign in?");
+                //loggedIn = false;
+            }
         }
         else {
             System.out.println("\nPasswords did not match. Try again.");
@@ -83,27 +90,31 @@ public class LoginMenu {
     }
 
     private void attemptExistingUserLogin() {
-        System.out.print("Login Name: ");
+        System.out.print("Username: ");
         String loginName = scanner.next();
         System.out.print("Password: ");
         String password = scanner.next();
 
         // TODO: Search database for loginName and confirm password matches
-        // if (isValidUser) -> update current user
-        // else -> Print login error message
-        user = new Student(loginName, password);
-        loggedIn = true;
+        if(databaseManager.checkIfLoginExists(loginName, password)){
+            user = new Student(loginName, password);  //Try to see if you can use hibernate to automatically do this
+            loggedIn = true;
+        }
+        else{
+            System.out.println("\nNo student account with name "+loginName+" exists. Would you like to create new account?");
+            loggedIn = false;
+        }
+
+        /*if (BusinessLogic.isExistingUser(loginName, password)) {
+            user = BusinessLogic.getStudentByName(username)
+        }
+        else {
+            System.out.println("Invalid username or password")
+        }*/
+
     }
 
-    public boolean isLoggedIn() {
-        return loggedIn;
-    }
-
-    public Student getUser() {
-        return this.user;
-    }
-
-    public boolean isSessionActive() {
-        return sessionActive;
-    }
+    public boolean isLoggedIn() {return loggedIn;}
+    public Student getUser() {return this.user;}
+    public boolean isSessionActive() {return sessionActive;}
 }

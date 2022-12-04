@@ -37,7 +37,7 @@ public class CommandLineUI {
                 user = loginMenu.getUser();
             }
             else {
-                mainMenu.run();
+                mainMenu.run(user);
                 sessionActive = mainMenu.isSessionActive();
                 loggedIn = mainMenu.isLoggedIn();
                 sessionActive = mainMenu.isSessionActive();

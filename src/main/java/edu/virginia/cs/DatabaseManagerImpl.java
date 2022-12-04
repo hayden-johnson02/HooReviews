@@ -197,7 +197,7 @@ public class DatabaseManagerImpl {
                 throw new IllegalStateException("Sorry, your connection is closed right now.");
             }
             String sql = String.format("""
-                    SELECT * FROM Courses WHERE Department = "%s" AND Catalog_Number = %d """, department, catalog_number);
+                    SELECT * FROM Courses WHERE Department = "%s" AND Catalog_Number = %d;""", department, catalog_number);
             statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             statement.close();
@@ -315,7 +315,7 @@ public class DatabaseManagerImpl {
             List<ReviewMessage> reviewList = new ArrayList<>();
             statement = connection.createStatement();
             String selectReviewsQuery = String.format("""
-                    SELECT * FROM Reviews WHERE CourseDepartment = "%s" AND CourseCatalogNumber = %d """, department, catalog_number);
+                    SELECT * FROM Reviews WHERE CourseDepartment = "%s" AND CourseCatalogNumber = %d;""", department, catalog_number);
             ResultSet rs = statement.executeQuery(selectReviewsQuery);
             while(rs.next()) {
                 String reviewMessage = rs.getString("textMessage");

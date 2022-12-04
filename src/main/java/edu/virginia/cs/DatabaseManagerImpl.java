@@ -116,8 +116,7 @@ public class DatabaseManagerImpl {
             statement.executeUpdate(sql);
             statement.close();
         } catch(SQLException e){
-            throw new RuntimeException(e);
-            //throw new IllegalStateException("Unable to delete the tables (Students, Courses, Reviews) as one of them may not exist");
+            throw new IllegalStateException("Unable to delete the tables (Students, Courses, Reviews) as one of them may not exist");
         }
 
     }
@@ -225,10 +224,12 @@ public class DatabaseManagerImpl {
             ResultSet rs = statement.executeQuery(sql);
             if(rs.next()) {
                 statement.close();
+                rs.close();
                 return true;
             }
             else{
                 statement.close();
+                rs.close();
                 return false;
             }
         } catch(SQLException e){
@@ -347,6 +348,8 @@ public class DatabaseManagerImpl {
                 String studentName = rs.getString("studentName");
                 reviewList.add(new ReviewMessage(reviewMessage, reviewScore, studentName));
             }
+            statement.close();
+            rs.close();
             return reviewList;
             } catch (SQLException e) {
                 throw new IllegalStateException("The courses or reviews table likely doesn't exist.");
@@ -358,6 +361,7 @@ public class DatabaseManagerImpl {
             if(connection == null) {
                 throw new IllegalStateException("Connection is already closed.");
             }
+            statement.close();
             connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);

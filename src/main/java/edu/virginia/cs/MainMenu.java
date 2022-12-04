@@ -94,17 +94,17 @@ public class MainMenu {
                 List<ReviewMessage> allReviews = businessLogic.getReviewsForCourse(course);
                 int avgScore = 0;
                 for(ReviewMessage currentReview : allReviews) {
-                    System.out.println(currentReview.getMessage());
+                    System.out.println(currentReview.getStudent()+" - "+currentReview.getMessage());
                     avgScore += currentReview.getScore();
                 }
-                System.out.println("Course average - " + avgScore/allReviews.size());
+                System.out.println("Course average - " + avgScore/allReviews.size()+"/5");
 
             }
             else if (businessLogic.isExistingCourse(course) && !businessLogic.courseHasReviews(course)) {
-                System.out.println("This course does not have any reviews yet.\n");
+                System.out.println("Sorry, "+course.getDepartment()+" "+course.getCatalogNumber()+" does not have any reviews yet.\n");
             }
             else {
-                System.out.println("That course does not exist\n");
+                System.out.println(course.getDepartment()+" "+course.getCatalogNumber()+" does not exist as a course\n");
             }
         }
     }

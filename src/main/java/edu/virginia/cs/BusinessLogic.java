@@ -36,12 +36,10 @@ public class BusinessLogic {
     }
 
     public boolean courseHasReviews(Course courseName) {
-        // List tempList = dataLayer.getAllCourses
-        // for (Course course : tempList) {
-        //      if (course.getName == courseName) {
-        //          return course.size() > 0
-        //      }
-        // }
+        List<ReviewMessage> allReviewsForCourse = databaseManager.getCourseReviews(courseName.getDepartment(), courseName.getCatalogNumber());
+        if(!allReviewsForCourse.isEmpty()) {
+            return true;
+        }
         return false;
     }
 }

@@ -139,7 +139,28 @@ public class DatabaseManagerImpl {
     }
 
     public void addStudents(List<Student> studentList){
+        try{
+            if (connection == null || connection.isClosed()) {
+                throw new IllegalStateException("Sorry, you connection is closed right now.");
+            }
+            for(Student currentStudent : studentList) {
+                String insertQuery = String.format("""
+                                insert into Students (name, password)
+                                    values ("%s", "%s");
+                                    """, currentStudent.getUsername(),
+                        currentStudent.getPassword());
+                try {
+                    statement = connection.createStatement();
+                    statement.executeUpdate(insertQuery);
+                    statement.close();
+                }  catch(SQLException e) {
+                    throw new IllegalArgumentException("The student with name: " + currentStudent.getUsername() + " is already in the students table.");
+                }
 
+            }
+        } catch(SQLException e){
+            throw new IllegalStateException("Student table likely does not exist.");
+        }
     }
 
     public boolean addStudent(String name, String password){
@@ -162,6 +183,12 @@ public class DatabaseManagerImpl {
         } catch(SQLException e){
             throw new IllegalStateException("Student table likely does not exist.");
         }
+    }
+    //used this link - https://www.baeldung.com/jdbc-check-table-exists
+    boolean tableExists(Connection connection, String tableName) throws SQLException {
+        DatabaseMetaData meta = connection.getMetaData();
+        ResultSet resultSet = meta.getTables(null, null, tableName, new String[] {"TABLE"});
+        return resultSet.next();
     }
 
 

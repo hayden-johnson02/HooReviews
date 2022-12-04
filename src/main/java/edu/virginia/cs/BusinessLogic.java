@@ -13,7 +13,6 @@ public class BusinessLogic {
     }
 
     public void addReviewForCourse(Review review) {
-        // dataLayer.addCourse
         databaseManager.addCourse(review.getCourse());
         databaseManager.addReview(review);
     }
@@ -27,19 +26,14 @@ public class BusinessLogic {
 
     public boolean isExistingUser(String username, String password) {
         return databaseManager.checkIfLoginExists(username, password);
-        //return false;
     }
 
     public boolean isExistingCourse(Course courseName) {
         return databaseManager.doesCourseExist(courseName.getDepartment(), courseName.getCatalogNumber());
-        //return false;
     }
 
     public boolean courseHasReviews(Course courseName) {
         List<ReviewMessage> allReviewsForCourse = databaseManager.getCourseReviews(courseName.getDepartment(), courseName.getCatalogNumber());
-        if(!allReviewsForCourse.isEmpty()) {
-            return true;
-        }
-        return false;
+        return (!allReviewsForCourse.isEmpty());
     }
 }

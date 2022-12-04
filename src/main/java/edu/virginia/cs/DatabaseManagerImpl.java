@@ -83,7 +83,7 @@ public class DatabaseManagerImpl {
             }
 
         } catch (SQLException e) {
-            throw new IllegalStateException(e+" At least one of the tables (Stops, BusLines, or Routes) already exists");
+            throw new IllegalStateException(e+" At least one of the tables (Students, Courses, Reviews) already exists");
         }
     }
     //@Override
@@ -100,7 +100,7 @@ public class DatabaseManagerImpl {
 
             statement.close();
         } catch(SQLException e){
-            throw new IllegalStateException("Unable to clear the tables (Stops, BusLines, and Routes) as one of them may not exist");
+            throw new IllegalStateException("Unable to delete the tables (Students, Courses, Reviews) as one of them may not exist");
         }
     }
 
@@ -116,7 +116,8 @@ public class DatabaseManagerImpl {
             statement.executeUpdate(sql);
             statement.close();
         } catch(SQLException e){
-            throw new IllegalStateException("Unable to delete the tables (Stops, BusLines, and Routes) as one of them may not exist");
+            throw new RuntimeException(e);
+            //throw new IllegalStateException("Unable to delete the tables (Students, Courses, Reviews) as one of them may not exist");
         }
 
     }
@@ -350,6 +351,17 @@ public class DatabaseManagerImpl {
             } catch (SQLException e) {
                 throw new IllegalStateException("The courses or reviews table likely doesn't exist.");
             }
+
+    }
+    public void disconnect() {
+        try {
+            if(connection == null) {
+                throw new IllegalStateException("Connection is already closed.");
+            }
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
     //used this link - https://www.baeldung.com/jdbc-check-table-exists

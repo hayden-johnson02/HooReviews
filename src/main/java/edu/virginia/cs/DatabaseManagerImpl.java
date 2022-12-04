@@ -185,6 +185,27 @@ public class DatabaseManagerImpl {
             throw new IllegalStateException("Student table likely does not exist.");
         }
     }
+    public boolean doesCourseExist(String department, int catalog_number){
+        try{
+            if (connection == null || connection.isClosed()) {
+                throw new IllegalStateException("Sorry, your connection is closed right now.");
+            }
+            String sql = String.format("""
+                    SELECT * FROM Courses WHERE Department = "%s" AND Catalog_Number = "%s" """, department, catalog_number);
+            statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            statement.close();
+            if(rs.next()) {
+                return true;
+            }
+            else{
+                return false;
+            }
+        } catch(SQLException e){
+            throw new IllegalStateException("Student table likely does not exist.");
+        }
+    }
+
     public void addCourses(List<Course> courseList) {
         try {
             if (connection == null || connection.isClosed()) {

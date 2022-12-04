@@ -75,6 +75,17 @@ public interface DatabaseManager {
      * a matching name/course ID).
      * @throws IllegalStateException if the Manager hasn't connected yet
      */
+
+
+    /**
+     * Checks if a course with the given info exists.
+     *
+     *
+     * @throws IllegalStateException if courses table doesn't exist
+     * @throws IllegalStateException if the Manager hasn't connected yet
+     */
+    public boolean doesCourseExist(String department, int catalog_number);
+
     void addCourses(List<Course> courseList);
 
     /**

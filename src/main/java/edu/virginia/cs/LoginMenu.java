@@ -3,7 +3,6 @@ package edu.virginia.cs;
 import java.util.Scanner;
 
 public class LoginMenu {
-
     private DatabaseManagerImpl databaseManager;
     private Scanner scanner;
     private Student user;
@@ -29,8 +28,8 @@ public class LoginMenu {
             if (isValidLoginMenuNumber(input)) {
                 executePromptForInput(Integer.parseInt(input));
             }
+            else {System.out.println("Invalid entry choice: " + input);}
         }
-        // If quit is typed at any point, indicate session is no longer active to close app
         if (input.equalsIgnoreCase("quit")) {
             sessionActive = false;
         }
@@ -38,6 +37,7 @@ public class LoginMenu {
 
     private String getLoginMenuInput(){
         System.out.println("""
+                
                 HooReviews: Login
                 
                 Enter number to make a selection:
@@ -60,7 +60,7 @@ public class LoginMenu {
         switch(choice) {
             case 1 -> attemptExistingUserLogin();
             case 2 -> attemptNewUserLogin();
-            default -> throw new IllegalArgumentException("Invalid Entry choice: " + choice);
+            default -> System.out.println("Invalid Entry choice: " + choice);
         }
     }
 
@@ -73,10 +73,8 @@ public class LoginMenu {
         String confirmPassword = scanner.next();
 
         if (newPassword.equals(confirmPassword)) {
-            // TODO: create new Student object and add to database
             if(databaseManager.checkIfLoginExistsByName(newUsername)) {
-                System.out.println("\nStudent by name "+newUsername+" already exists. Please try again.");
-                loggedIn = false;
+                System.out.println("\nStudent with username "+newUsername+" already exists. Please try again.");
             }
             else if(databaseManager.addStudent(newUsername, newPassword)){
                 user = new Student(newUsername, newPassword);
@@ -84,7 +82,6 @@ public class LoginMenu {
             }
             else {
                 System.out.println("Please try again");
-                loggedIn = false;
             }
         }
         else {
@@ -98,23 +95,14 @@ public class LoginMenu {
         System.out.print("Password: ");
         String password = scanner.next();
 
-        // TODO: Search database for loginName and confirm password matches
         if(databaseManager.checkIfLoginExists(loginName, password)){
             user = new Student(loginName, password);  //Try to see if you can use hibernate to automatically do this
             loggedIn = true;
         }
         else{
-            System.out.println("\nYour username or password is incorrect. Please check the info or create a new login if needed.");
-            loggedIn = false;
+            System.out.println("\nYour username or password is incorrect. P" +
+                    "lease check the info or create a new login if needed.");
         }
-
-        /*if (BusinessLogic.isExistingUser(loginName, password)) {
-            user = BusinessLogic.getStudentByName(username)
-        }
-        else {
-            System.out.println("Invalid username or password")
-        }*/
-
     }
 
     public boolean isLoggedIn() {return loggedIn;}

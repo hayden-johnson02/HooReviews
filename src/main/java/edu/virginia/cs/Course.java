@@ -24,6 +24,10 @@ public class Course {
 
     public int reviewCount() {return reviews.size();}
 
+    public Map<Student, Review> getAllReviews() {
+        return reviews;
+    }
+
     public Review getReview(Student student) {return reviews.get(student);}
 
     public void addReview(Student student, Review newReview) {reviews.put(student, newReview);}

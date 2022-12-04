@@ -1,7 +1,7 @@
 package edu.virginia.cs;
 
 import java.sql.*;
-import java.util.List;
+import java.util.*;
 
 public class DatabaseManagerImpl {
     static DatabaseManagerImpl single_instance;
@@ -65,12 +65,14 @@ public class DatabaseManagerImpl {
             statement = connection.createStatement();
             String sqlReviews = "CREATE TABLE Reviews "+
                     " (id INTEGER PRIMARY KEY AUTOINCREMENT, "+
-                    " StudentID INTEGER not NULL, "+
-                    " CourseID INTEGER not NULL, "+
+                    " StudentName VARCHAR(255) not NULL, "+
+                    " CourseDepartment VARCHAR(255) not NULL, "+
+                    " CourseCatalogNumber DOUBLE not NULL, "+
                     " textMessage VARCHAR(255) not NULL, "+
                     " rating INTEGER not NULL, "+
-                    "FOREIGN KEY (StudentID) REFERENCES Students (StudentID) ON DELETE CASCADE, "+
-                    "FOREIGN KEY (CourseID) REFERENCES Courses (CourseID) ON DELETE CASCADE);";
+                    "FOREIGN KEY (StudentName) REFERENCES Students (name) ON DELETE CASCADE, "+
+                    "FOREIGN KEY (CourseDepartment) REFERENCES Courses (Department) ON DELETE CASCADE, "+
+                    "FOREIGN KEY (CourseCatalogNumber) REFERENCES Courses (Catalog_Number) ON DELETE CASCADE);";
             statement.executeUpdate(sqlReviews);
             statement.close();
 
@@ -166,7 +168,7 @@ public class DatabaseManagerImpl {
     public boolean addStudent(String name, String password){
         try{
             if (connection == null || connection.isClosed()) {
-                throw new IllegalStateException("Sorry, you connection is closed right now.");
+                throw new IllegalStateException("Sorry, your connection is closed right now.");
             }
             if(!checkIfLoginExists(name, password)){
                 String sql = String.format("""
@@ -183,6 +185,58 @@ public class DatabaseManagerImpl {
         } catch(SQLException e){
             throw new IllegalStateException("Student table likely does not exist.");
         }
+    }
+    public void addCourses(List<Course> courseList) {
+        try {
+            if (connection == null || connection.isClosed()) {
+                throw new IllegalStateException("Sorry, your connection is closed right now.");
+            }
+            for(Course currentCourse : courseList) {
+                String insertQueryToCourses = String.format("""
+                                insert into Courses (Department, Catalog_Number)
+                                    values ("%s", %d);
+                                    """, currentCourse.getDepartment(),
+                        currentCourse.getCatalogNumber());
+
+                Map<Student, Review> allCourseReviews = currentCourse.getAllReviews();
+
+                for(Student currentStudent : allCourseReviews.keySet()) {
+                    String insertQueryToReviews = String.format("""
+                                insert into Reviews (StudentName, CourseDepartment, CourseCatalogNumber, textMessage, rating)
+                                    values ("%s", "%s", %d, "%s", %d);
+                                    """, currentStudent.getUsername(),
+                            currentCourse.getDepartment(),
+                            currentCourse.getCatalogNumber(),
+                            allCourseReviews.get(currentStudent).getReviewText(),
+                            allCourseReviews.get(currentStudent).getRating());
+
+                    try {
+                        statement = connection.createStatement();
+                        statement.executeUpdate(insertQueryToReviews);
+                        statement.close();
+                    } catch(SQLException e) {
+                        throw new IllegalArgumentException("There are no reviews for this course.");
+                    }
+                }
+
+                try {
+                    statement = connection.createStatement();
+                    statement.executeUpdate(insertQueryToCourses);
+                    statement.close();
+                } catch(SQLException e) {
+                    throw new IllegalArgumentException("This course had invalid data, please check it.");
+                }
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("The courses or reviews table likely doesn't exist.");
+        }
+    }
+    public Course getCourseByName(String courseName) {
+
+
+
+
+
     }
     //used this link - https://www.baeldung.com/jdbc-check-table-exists
     boolean tableExists(Connection connection, String tableName) throws SQLException {

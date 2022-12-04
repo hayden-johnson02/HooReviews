@@ -88,19 +88,6 @@ public interface DatabaseManager {
      */
     Course getCourseByName();
     /**
-     * Return all the reviews for a given course.
-     *
-     * Returns an empty list if the course has no reviews.
-     *
-     * @throws IllegalStateException if students, courses, or reviews table doesn't exist
-     * @throws IllegalStateException if the Manager hasn't connected yet
-     */
-
-    // Add get course by string name
-
-    List<Review> getCourseReviews();
-
-    /**
      * Commits any changes and ends the connection.
      *
      * @throws IllegalStateException if the Manager hasn't connected yet

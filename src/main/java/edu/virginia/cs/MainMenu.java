@@ -18,7 +18,7 @@ public class MainMenu {
 
     private void initialize(Student user) {
         this.user = user;
-        businessLogic = new BusinessLogic();
+        businessLogic = new BusinessLogic(DatabaseManagerImpl.getDatabaseManager());
         sessionActive = true;
         loggedOut = false;
     }
@@ -78,7 +78,7 @@ public class MainMenu {
         if (course != null) {
             // TODO: Get review as string from user and write to database
             System.out.print("Write review for " + course + ": ");
-            String text = scanner.next();
+            String text = scanner.nextLine();
             System.out.print("Enter rating (1-5): ");
             int rating = scanner.nextInt();
             Review review = new Review(user, course, text, rating);

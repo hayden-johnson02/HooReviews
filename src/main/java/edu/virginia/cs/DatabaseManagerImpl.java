@@ -218,11 +218,20 @@ public class DatabaseManagerImpl {
                 throw new IllegalStateException("Sorry, your connection is closed right now.");
             }
             for(Course currentCourse : courseList) {
-                String insertQueryToCourses = String.format("""
-                                insert into Courses (Department, Catalog_Number)
-                                    values ("%s", %d);
-                                    """, currentCourse.getDepartment(),
-                        currentCourse.getCatalogNumber());
+                if(!doesCourseExist(currentCourse.getDepartment(), currentCourse.getCatalogNumber())) {
+                    String insertQueryToCourses = String.format("""
+                                    insert into Courses (Department, Catalog_Number)
+                                        values ("%s", %d);
+                                        """, currentCourse.getDepartment(),
+                            currentCourse.getCatalogNumber());
+                    try {
+                        statement = connection.createStatement();
+                        statement.executeUpdate(insertQueryToCourses);
+                        statement.close();
+                    } catch(SQLException e) {
+                        throw new IllegalArgumentException("This course had invalid data, please check it.");
+                    }
+                }
 
                 Map<Student, Review> allCourseReviews = currentCourse.getAllReviews();
 
@@ -244,6 +253,24 @@ public class DatabaseManagerImpl {
                         throw new IllegalArgumentException("There are no reviews for this course.");
                     }
                 }
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("The courses or reviews table likely doesn't exist.");
+        }
+    }
+
+    public void addCourse(Course course){
+        try{
+            if (connection == null || connection.isClosed()) {
+                throw new IllegalStateException("Sorry, your connection is closed right now.");
+            }
+
+            if(!doesCourseExist(course.getDepartment(), course.getCatalogNumber())) {
+                String insertQueryToCourses = String.format("""
+                                    insert into Courses (Department, Catalog_Number)
+                                        values ("%s", %d);
+                                        """, course.getDepartment(),
+                        course.getCatalogNumber());
                 try {
                     statement = connection.createStatement();
                     statement.executeUpdate(insertQueryToCourses);
@@ -253,7 +280,7 @@ public class DatabaseManagerImpl {
                 }
             }
         } catch (SQLException e) {
-            throw new IllegalStateException("The courses or reviews table likely doesn't exist.");
+            throw new IllegalStateException("The courses table likely doesn't exist.");
         }
     }
     public void addReview(Review review) {
@@ -274,7 +301,7 @@ public class DatabaseManagerImpl {
                 statement.executeUpdate(insertQuery);
                 statement.close();
 ;            } catch(SQLException ex) {
-                throw new IllegalArgumentException("The given review has invalid data.");
+                throw new IllegalArgumentException(ex+" The given review has invalid data.");
             }
         } catch(SQLException e) {
             throw new IllegalStateException("The reviews table likely doesn't exist.");

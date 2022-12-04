@@ -26,8 +26,8 @@ public class BusinessLogic {
         return allReviews;
     }
 
-    public boolean isExistingUser(String username, String password) {
-        return databaseManager.checkIfLoginExists(username, password);
+    public boolean isExistingUser(String username) {
+        return databaseManager.checkIfLoginExistsByName(username);
     }
 
     public boolean isExistingCourse(Course courseName) {

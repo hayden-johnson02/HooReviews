@@ -74,12 +74,16 @@ public class LoginMenu {
 
         if (newPassword.equals(confirmPassword)) {
             // TODO: create new Student object and add to database
-            if(databaseManager.addStudent(newUsername, newPassword)){
+            if(databaseManager.checkIfLoginExistsByName(newUsername)) {
+                System.out.println("\nStudent by name "+newUsername+" already exists. Please try again.");
+                loggedIn = false;
+            }
+            else if(databaseManager.addStudent(newUsername, newPassword)){
                 user = new Student(newUsername, newPassword);
                 loggedIn = true;
             }
-            else{
-                System.out.println("\nStudent by name "+newUsername+" already exists. Please try again.");
+            else {
+                System.out.println("Please try again");
                 loggedIn = false;
             }
         }

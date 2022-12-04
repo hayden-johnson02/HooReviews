@@ -131,7 +131,29 @@ public class DatabaseManagerImpl {
             ResultSet rs = statement.executeQuery(sql);
             if(rs.next()){
                 //Login exists
-                System.out.println(rs.getString("name"));
+                statement.close();
+                rs.close();
+                return true;
+            }
+            statement.close();
+            rs.close();
+            return false;
+
+        } catch(SQLException e){
+            throw new IllegalStateException("Unable to return user with name "+username+" because Students table does not exist");
+        }
+    }
+    public boolean checkIfLoginExistsByName(String username) {
+        try{
+            if (connection == null || connection.isClosed()) {
+                throw new IllegalStateException("Sorry, you connection is closed right now.");
+            }
+            statement = connection.createStatement();
+            String sql = String.format("""
+                    SELECT * FROM Students WHERE name = "%s"; """, username);
+            ResultSet rs = statement.executeQuery(sql);
+            if(rs.next()){
+                //Login exists
                 statement.close();
                 rs.close();
                 return true;

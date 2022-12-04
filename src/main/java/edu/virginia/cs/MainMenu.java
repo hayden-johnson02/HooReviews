@@ -92,7 +92,7 @@ public class MainMenu {
             // TODO: Query database for course reviews and print - print error message if course not in database
             if (businessLogic.isExistingCourse(course) && businessLogic.courseHasReviews(course)) {
                 List<ReviewMessage> allReviews = businessLogic.getReviewsForCourse(course);
-                int avgScore = 0;
+                double avgScore = 0;
                 for(ReviewMessage currentReview : allReviews) {
                     System.out.println(currentReview.getMessage());
                     avgScore += currentReview.getScore();

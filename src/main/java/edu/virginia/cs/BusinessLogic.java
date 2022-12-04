@@ -1,6 +1,6 @@
 package edu.virginia.cs;
 
-import java.util.Map;
+import java.util.*;
 
 public class BusinessLogic {
     private DatabaseManagerImpl databaseManager;
@@ -18,8 +18,11 @@ public class BusinessLogic {
         databaseManager.addReview(review);
     }
 
-    public void getReviewsForCourse(Course course) {
-        // dataLayer.getCourse
+    public List<ReviewMessage> getReviewsForCourse(Course course) {
+        String courseDepartment = course.getDepartment();
+        int courseCatalog_Number = course.getCatalogNumber();
+        List<ReviewMessage> allReviews = databaseManager.getCourseReviews(courseDepartment, courseCatalog_Number);
+        return allReviews;
     }
 
     public boolean isExistingUser(String username, String password) {

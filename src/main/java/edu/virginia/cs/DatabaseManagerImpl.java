@@ -44,37 +44,43 @@ public class DatabaseManagerImpl {
                 throw new IllegalStateException("Connection is closed right now.");
             }
             //First table: Students
-            statement = connection.createStatement();
-            String sqlStudents = "CREATE TABLE Students "+
-                    " (id INTEGER PRIMARY KEY AUTOINCREMENT, "+
-                    " name VARCHAR(255) not NULL, "+
-                    " password VARCHAR(255) not NULL);";
-            statement.executeUpdate(sqlStudents);
-            statement.close();
+            if(!tableExists(connection, "Students")) {
+                statement = connection.createStatement();
+                String sqlStudents = "CREATE TABLE Students " +
+                        " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        " name VARCHAR(255) not NULL, " +
+                        " password VARCHAR(255) not NULL);";
+                statement.executeUpdate(sqlStudents);
+                statement.close();
+            }
 
             //Second table: Courses
-            statement = connection.createStatement();
-            String sqlCourses = "CREATE TABLE Courses "+
-                    " (id INTEGER PRIMARY KEY AUTOINCREMENT, "+
-                    " Department VARCHAR(255) not NULL, "+
-                    " Catalog_Number INTEGER not NULL);";
-            statement.executeUpdate(sqlCourses);
-            statement.close();
+            if(!tableExists(connection, "Courses")) {
+                statement = connection.createStatement();
+                String sqlCourses = "CREATE TABLE Courses " +
+                        " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        " Department VARCHAR(255) not NULL, " +
+                        " Catalog_Number INTEGER not NULL);";
+                statement.executeUpdate(sqlCourses);
+                statement.close();
+            }
 
             //Third table: Reviews
-            statement = connection.createStatement();
-            String sqlReviews = "CREATE TABLE Reviews "+
-                    " (id INTEGER PRIMARY KEY AUTOINCREMENT, "+
-                    " StudentName VARCHAR(255) not NULL, "+
-                    " CourseDepartment VARCHAR(255) not NULL, "+
-                    " CourseCatalogNumber INTEGER not NULL, "+
-                    " textMessage VARCHAR(255) not NULL, "+
-                    " rating INTEGER not NULL, "+
-                    "FOREIGN KEY (StudentName) REFERENCES Students (name) ON DELETE CASCADE, "+
-                    "FOREIGN KEY (CourseDepartment) REFERENCES Courses (Department) ON DELETE CASCADE, "+
-                    "FOREIGN KEY (CourseCatalogNumber) REFERENCES Courses (Catalog_Number) ON DELETE CASCADE);";
-            statement.executeUpdate(sqlReviews);
-            statement.close();
+            if(!tableExists(connection, "Reviews")) {
+                statement = connection.createStatement();
+                String sqlReviews = "CREATE TABLE Reviews " +
+                        " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        " StudentName VARCHAR(255) not NULL, " +
+                        " CourseDepartment VARCHAR(255) not NULL, " +
+                        " CourseCatalogNumber INTEGER not NULL, " +
+                        " textMessage VARCHAR(255) not NULL, " +
+                        " rating INTEGER not NULL, " +
+                        "FOREIGN KEY (StudentName) REFERENCES Students (name) ON DELETE CASCADE, " +
+                        "FOREIGN KEY (CourseDepartment) REFERENCES Courses (Department) ON DELETE CASCADE, " +
+                        "FOREIGN KEY (CourseCatalogNumber) REFERENCES Courses (Catalog_Number) ON DELETE CASCADE);";
+                statement.executeUpdate(sqlReviews);
+                statement.close();
+            }
 
         } catch (SQLException e) {
             throw new IllegalStateException(e+" At least one of the tables (Stops, BusLines, or Routes) already exists");
@@ -292,8 +298,8 @@ public class DatabaseManagerImpl {
 
             return reviewList;
             } catch (SQLException e) {
-            throw new IllegalStateException("The courses or reviews table likely doesn't exist.");
-        }
+                throw new IllegalStateException("The courses or reviews table likely doesn't exist.");
+            }
 
     }
     //used this link - https://www.baeldung.com/jdbc-check-table-exists

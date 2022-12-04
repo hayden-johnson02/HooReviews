@@ -81,7 +81,7 @@ public class LoginMenu {
             }
             else{
                 System.out.println("\nStudent by name "+newUsername+" already exists. Please try again.");
-                //loggedIn = false;
+                loggedIn = false;
             }
         }
         else {
@@ -101,7 +101,7 @@ public class LoginMenu {
             loggedIn = true;
         }
         else{
-            System.out.println("\nYour username or password is wrong, please check the info or create a new login if needed.");
+            System.out.println("\nYour username or password is incorrect. Please check the info or create a new login if needed.");
             loggedIn = false;
         }
 

@@ -32,20 +32,29 @@ public class CommandLineUI {
         while(sessionActive) {
             if (!loggedIn) {
                 loginMenu.run();
-                sessionActive = loginMenu.isSessionActive();
-                loggedIn = loginMenu.isLoggedIn();
-                user = loginMenu.getUser();
+                updateStatusFromLogin();
             }
             else {
                 mainMenu.run(user);
-                sessionActive = mainMenu.isSessionActive();
-                loggedIn = mainMenu.isLoggedIn();
-                sessionActive = mainMenu.isSessionActive();
-                user = mainMenu.getUser();
+                updateStatusFromMain();
             }
         }
         scanner.close();
         System.exit(0);
+    }
+
+    private void updateStatusFromLogin() {
+        sessionActive = loginMenu.isSessionActive();
+        loggedIn = loginMenu.isLoggedIn();
+        if (loginMenu.getUser() != null) {
+            user = loginMenu.getUser();
+        }
+    }
+
+    private void updateStatusFromMain() {
+        sessionActive = mainMenu.isSessionActive();
+        loggedIn = mainMenu.isLoggedIn();
+        user = mainMenu.getUser();
     }
 
 

@@ -4,7 +4,7 @@ plugins {
 
 jar {
     manifest {
-        attributes "Main-Class": "edu.virginia.cs.Main"
+        attributes "Main-Class": "edu.virginia.cs.CommandLineUI"
     }
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE

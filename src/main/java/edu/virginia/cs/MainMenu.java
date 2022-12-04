@@ -37,7 +37,6 @@ public class MainMenu {
     }
 
     private String getMenuChoice(){
-        System.out.println("\nUser: " + user.getUsername());
         System.out.println("""
                 HooReviews: Main
                 

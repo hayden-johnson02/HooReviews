@@ -80,7 +80,7 @@ public class LoginMenu {
                 loggedIn = true;
             }
             else{
-                System.out.println("\nStudent by name "+newUsername+" already exists. Would you like to sign in?");
+                System.out.println("\nStudent by name "+newUsername+" already exists. Please try again.");
                 //loggedIn = false;
             }
         }

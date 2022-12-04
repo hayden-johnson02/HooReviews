@@ -93,9 +93,11 @@ public class MainMenu {
             if (businessLogic.isExistingCourse(course) && businessLogic.courseHasReviews(course)) {
                 List<ReviewMessage> allReviews = businessLogic.getReviewsForCourse(course);
                 double avgScore = 0;
+                int i = 1;
                 for(ReviewMessage currentReview : allReviews) {
-                    System.out.println(currentReview.getStudent()+" - "+currentReview.getMessage());
+                    System.out.println("Review " + i + ") " + currentReview.getMessage());
                     avgScore += currentReview.getScore();
+                    i++;
                 }
                 System.out.println("Course average - " + avgScore/allReviews.size()+"/5");
 

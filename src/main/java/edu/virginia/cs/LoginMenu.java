@@ -74,7 +74,6 @@ public class LoginMenu {
 
         if (newPassword.equals(confirmPassword)) {
             // TODO: create new Student object and add to database
-            loggedIn = true;
             if(databaseManager.addStudent(newUsername, newPassword)){
                 user = new Student(newUsername, newPassword);
                 loggedIn = true;

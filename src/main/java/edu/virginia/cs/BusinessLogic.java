@@ -13,7 +13,9 @@ public class BusinessLogic {
     }
 
     public void addReviewForCourse(Review review) {
-        databaseManager.addCourse(review.getCourse());
+        if(!databaseManager.doesCourseExist(review.getCourse().getDepartment(), review.getCourse().getCatalogNumber())) {
+            databaseManager.addCourse(review.getCourse());
+        }
         databaseManager.addReview(review);
     }
 

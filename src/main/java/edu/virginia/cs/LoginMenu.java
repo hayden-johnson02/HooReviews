@@ -101,7 +101,7 @@ public class LoginMenu {
             loggedIn = true;
         }
         else{
-            System.out.println("\nNo student account with name "+loginName+" exists. Would you like to create new account?");
+            System.out.println("\nYour username or password is wrong, please check the info or create a new login if needed.");
             loggedIn = false;
         }
 

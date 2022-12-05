@@ -19,19 +19,7 @@ public class ReviewMessage {
         return message;
     }
 
-    public String getStudent() {
-        return studentName;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public int getScore() {
         return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 }

@@ -30,6 +30,7 @@ public class MainMenu {
             if (isValidMenuChoice(input)) {
                 executePromptForInput(Integer.parseInt(input));
             }
+            else {System.out.println("Invalid entry choice: " + input);}
         }
         if (input.equalsIgnoreCase("quit")) {
             sessionActive = false;
@@ -38,6 +39,7 @@ public class MainMenu {
 
     private String getMenuChoice(){
         System.out.println("""
+                
                 HooReviews: Main
                 
                 Enter number to make a selection:
@@ -62,7 +64,7 @@ public class MainMenu {
             case 1 -> submitReview();
             case 2 -> seeReviews();
             case 3 -> logout();
-            default -> throw new IllegalArgumentException("Invalid Entry choice: " + choice);
+            default -> System.out.println("Invalid Entry choice: " + choice);
         }
     }
 
@@ -74,21 +76,27 @@ public class MainMenu {
     private void submitReview() {
         Course course = getCourseFromInput();
         if (course != null) {
-            // TODO: Get review as string from user and write to database
-            System.out.print("Write review for " + course + ": ");
-            String text = scanner.nextLine();
-            System.out.print("Enter rating (1-5): ");
-            int rating = scanner.nextInt();
-            Review review = new Review(user, course, text, rating);
+            String text = "";
+            while(text.strip().length() < 1) {
+                System.out.print("Write review for " + course + ": ");
+                text = scanner.nextLine();
+            }
+            String ratingText = "";
+            while(!isValidRating(ratingText)) {
+                System.out.print("Enter rating (1-5): ");
+                ratingText = scanner.next();
+                if (!isValidRating(ratingText)) {
+                    System.out.println("Invalid rating. Rating must be an integer between 1 and 5.");
+                }
+            }
+            Review review = new Review(user, course, text, Integer.parseInt(ratingText));
             businessLogic.addReviewForCourse(review);
         }
     }
 
     private void seeReviews() {
-
         Course course = getCourseFromInput();
         if (course != null) {
-            // TODO: Query database for course reviews and print - print error message if course not in database
             if (businessLogic.isExistingCourse(course) && businessLogic.courseHasReviews(course)) {
                 List<ReviewMessage> allReviews = businessLogic.getReviewsForCourse(course);
                 double avgScore = 0;
@@ -98,8 +106,7 @@ public class MainMenu {
                     avgScore += currentReview.getScore();
                     i++;
                 }
-                System.out.println("Course average - " + avgScore/allReviews.size()+"/5");
-
+                System.out.println("\nAverage Rating: " + avgScore/allReviews.size()+"/5");
             }
             else if (businessLogic.isExistingCourse(course) && !businessLogic.courseHasReviews(course)) {
                 System.out.println("Sorry, "+course.getDepartment()+" "+course.getCatalogNumber()+" does not have any reviews yet.\n");
@@ -118,7 +125,8 @@ public class MainMenu {
             return new Course(department, catalogNumber);
         }
         else {
-            System.out.println("Invalid course name. Courses have format of 2-4 capital letters followed by 4 digits.");
+            System.out.println("Invalid course name. Courses have format of 2-4 capital letters followed by " +
+                    "a space and 4 digits. Ex: \"CS 3140\"");
         }
         return null;
     }
@@ -140,10 +148,17 @@ public class MainMenu {
         return matcher.matches();
     }
 
-    public boolean isSessionActive(){return sessionActive;}
-    public boolean isLoggedIn() {
-        return !loggedOut;
+    private boolean isValidRating(String input) {
+        try {
+            int rating = Integer.parseInt(input);
+            return 1 <= rating && rating <= 5;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
+
+    public boolean isSessionActive(){return sessionActive;}
+    public boolean isLoggedIn() {return !loggedOut;}
     public Student getUser() {return this.user;}
 
 

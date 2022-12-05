@@ -112,7 +112,8 @@ public class MainMenu {
                 System.out.println("Sorry, "+course.getDepartment()+" "+course.getCatalogNumber()+" does not have any reviews yet.\n");
             }
             else {
-                System.out.println(course.getDepartment()+" "+course.getCatalogNumber()+" does not exist as a course\n");
+                System.out.println(course.getDepartment()+" "+course.getCatalogNumber()+" does not exist as a course or does" +
+                        "not have any reviews yet!\n");
             }
         }
     }

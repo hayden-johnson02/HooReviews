@@ -28,7 +28,7 @@ public class LoginMenu {
             if (isValidLoginMenuNumber(input)) {
                 executePromptForInput(Integer.parseInt(input));
             }
-            else {System.out.println("Invalid entry choice: " + input);}
+            else if (!input.equalsIgnoreCase("quit")){System.out.println("Invalid entry choice: " + input);}
         }
         if (input.equalsIgnoreCase("quit")) {
             sessionActive = false;

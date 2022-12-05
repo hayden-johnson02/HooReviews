@@ -158,9 +158,7 @@ public class MainMenu {
     }
 
     public boolean isSessionActive(){return sessionActive;}
-    public boolean isLoggedIn() {
-        return !loggedOut;
-    }
+    public boolean isLoggedIn() {return !loggedOut;}
     public Student getUser() {return this.user;}
 
 

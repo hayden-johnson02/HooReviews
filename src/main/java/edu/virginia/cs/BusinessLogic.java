@@ -4,9 +4,6 @@ import java.util.*;
 
 public class BusinessLogic {
     private DatabaseManagerImpl databaseManager;
-    private ReviewService reviewService;
-    private Map<String, Course> courseMap;
-    private Map<String, Student> userMap;
 
     public BusinessLogic(DatabaseManagerImpl dbManager){
         databaseManager = dbManager;
@@ -22,8 +19,7 @@ public class BusinessLogic {
     public List<ReviewMessage> getReviewsForCourse(Course course) {
         String courseDepartment = course.getDepartment();
         int courseCatalog_Number = course.getCatalogNumber();
-        List<ReviewMessage> allReviews = databaseManager.getCourseReviews(courseDepartment, courseCatalog_Number);
-        return allReviews;
+        return databaseManager.getCourseReviews(courseDepartment, courseCatalog_Number);
     }
 
     public boolean isExistingUser(String username) {

@@ -16,32 +16,14 @@ public class Review {
     public Student getStudent() {
         return student;
     }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
     public Course getCourse() {
         return course;
     }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-
     public String getReviewText() {
         return reviewText;
     }
 
-    public void setReviewText(String reviewText) {
-        this.reviewText = reviewText;
-    }
-
     public int getRating() {
         return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
     }
 }

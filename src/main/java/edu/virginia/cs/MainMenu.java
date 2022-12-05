@@ -106,7 +106,7 @@ public class MainMenu {
                     avgScore += currentReview.getScore();
                     i++;
                 }
-                System.out.println("\nAverage Rating: " + avgScore/allReviews.size()+"/5");
+                System.out.println("\nAverage Rating: " + String.format("%.2f", avgScore/allReviews.size()) +"/5");
             }
             else if (businessLogic.isExistingCourse(course) && !businessLogic.courseHasReviews(course)) {
                 System.out.println("Sorry, "+course.getDepartment()+" "+course.getCatalogNumber()+" does not have any reviews yet.\n");

@@ -34,4 +34,7 @@ public class BusinessLogic {
         List<ReviewMessage> allReviewsForCourse = databaseManager.getCourseReviews(courseName.getDepartment(), courseName.getCatalogNumber());
         return (!allReviewsForCourse.isEmpty());
     }
+    public boolean hasStudentReviewedCourse(Student curStudent, Course curCourse) {
+        return databaseManager.hasStudentReviewedCourse(curStudent, curCourse);
+    }
 }

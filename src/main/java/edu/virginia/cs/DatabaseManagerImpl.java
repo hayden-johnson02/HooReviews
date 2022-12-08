@@ -356,6 +356,30 @@ public class DatabaseManagerImpl {
             }
 
     }
+    public boolean hasStudentReviewedCourse(Student curStudent, Course curCourse) {
+        try{
+            if (connection == null || connection.isClosed()) {
+                throw new IllegalStateException("Sorry, your connection is closed right now.");
+            }
+            String sql = String.format("""
+                    SELECT * FROM Reviews WHERE StudentName = "%s" AND CourseDepartment = "%s" AND CourseCatalogNumber = %d;"""
+                    , curStudent.getUsername(), curCourse.getDepartment(), curCourse.getCatalogNumber());
+            statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            if(rs.next()) {
+                statement.close();
+                rs.close();
+                return true;
+            }
+            else{
+                statement.close();
+                rs.close();
+                return false;
+            }
+        } catch(SQLException e){
+            throw new IllegalStateException("Review table likely does not exist.");
+        }
+    }
     public void disconnect() {
         try {
             if(connection == null) {

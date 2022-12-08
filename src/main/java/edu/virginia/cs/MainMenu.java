@@ -90,7 +90,12 @@ public class MainMenu {
                 }
             }
             Review review = new Review(user, course, text, Integer.parseInt(ratingText));
-            businessLogic.addReviewForCourse(review);
+            if(businessLogic.hasStudentReviewedCourse(user, course)) {
+                System.out.println("You have already reviewed this course! You can not review a course twice.");
+            }
+            else {
+                businessLogic.addReviewForCourse(review);
+            }
         }
     }
 

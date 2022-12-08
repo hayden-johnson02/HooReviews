@@ -1,10 +1,6 @@
-# [HW 7]
+# Hoo Reviews - Student Course Evaluation System
 
 ## Authors
-
-*Each author should add their own name, and *only* their own name via commit and push.*
-
-*You should make the edits to this readme in your IDE, not on the GitHub website*
 
 * Daniel Biondolillo - xtz3mx
 * Hayden Johnson - cxy6nx
@@ -12,7 +8,6 @@
 
 ## Description
 
-*Add a description of how to build and run your program here*
 Clone the repository by running this command in a terminal:
     git clone https://github.com/uva-cs3140-fa22/hw7-xtz3mx-cxy6nx-amy6zx.git
 

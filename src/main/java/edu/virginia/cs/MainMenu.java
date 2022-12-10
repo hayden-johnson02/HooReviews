@@ -46,6 +46,7 @@ public class MainMenu {
                 1) Submit Review for a Course
                 2) See Reviews for a Course
                 3) Log Out
+                4) Exit from program
                 """);
         return scanner.next().strip();
     }
@@ -53,7 +54,7 @@ public class MainMenu {
     private boolean isValidMenuChoice(String input) {
         try {
             int choice = Integer.parseInt(input);
-            return 1 <= choice && choice <= 3;
+            return 1 <= choice && choice <= 4;
         } catch (NumberFormatException e) {
             return false;
         }
@@ -64,6 +65,7 @@ public class MainMenu {
             case 1 -> submitReview();
             case 2 -> seeReviews();
             case 3 -> logout();
+            case 4 -> System.exit(0);
             default -> System.out.println("Invalid Entry choice: " + choice);
         }
     }
@@ -84,7 +86,7 @@ public class MainMenu {
             String ratingText = "";
             while(!isValidRating(ratingText)) {
                 System.out.print("Enter rating (1-5): ");
-                ratingText = scanner.next();
+                ratingText = scanner.nextLine();
                 if (!isValidRating(ratingText)) {
                     System.out.println("Invalid rating. Rating must be an integer between 1 and 5.");
                 }

@@ -43,6 +43,7 @@ public class LoginMenu {
                 Enter number to make a selection:
                 1) Login to Existing Account
                 2) Create New User
+                3) Exit
                 """);
         return scanner.next().strip();
     }
@@ -50,7 +51,7 @@ public class LoginMenu {
     private boolean isValidLoginMenuNumber(String input) {
         try {
             int choice = Integer.parseInt(input);
-            return 1 <= choice && choice <= 2;
+            return 1 <= choice && choice <= 3;
         } catch (NumberFormatException e) {
             return false;
         }
@@ -60,11 +61,13 @@ public class LoginMenu {
         switch(choice) {
             case 1 -> attemptExistingUserLogin();
             case 2 -> attemptNewUserLogin();
+            case 3 -> System.exit(0);
             default -> System.out.println("Invalid Entry choice: " + choice);
         }
     }
 
     private void attemptNewUserLogin() {
+        System.out.println("Username and password must only be 1 word: ");
         System.out.print("New Username: ");
         String newUsername = scanner.next();
         System.out.print("New Password: ");

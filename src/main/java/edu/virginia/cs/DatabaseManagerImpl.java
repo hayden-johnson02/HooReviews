@@ -123,7 +123,7 @@ public class DatabaseManagerImpl {
     public boolean checkIfLoginExists(String username, String password) {
         try{
             if (connection == null || connection.isClosed()) {
-                throw new IllegalStateException("Sorry, you connection is closed right now.");
+                System.out.println("Sorry, you connection is closed right. Please try again later.");
             }
             statement = connection.createStatement();
             String sql = String.format("""
@@ -146,7 +146,7 @@ public class DatabaseManagerImpl {
     public boolean checkIfLoginExistsByName(String username) {
         try{
             if (connection == null || connection.isClosed()) {
-                throw new IllegalStateException("Sorry, you connection is closed right now.");
+                System.out.println("Sorry, you connection is closed right. Please try again later.");
             }
             statement = connection.createStatement();
             String sql = String.format("""
@@ -170,7 +170,7 @@ public class DatabaseManagerImpl {
     public void addStudents(List<Student> studentList){
         try{
             if (connection == null || connection.isClosed()) {
-                throw new IllegalStateException("Sorry, you connection is closed right now.");
+                System.out.println("Sorry, you connection is closed right. Please try again later.");
             }
             for(Student currentStudent : studentList) {
                 String insertQuery = String.format("""
@@ -195,7 +195,7 @@ public class DatabaseManagerImpl {
     public boolean addStudent(String name, String password){
         try{
             if (connection == null || connection.isClosed()) {
-                throw new IllegalStateException("Sorry, your connection is closed right now.");
+                System.out.println("Sorry, you connection is closed right. Please try again later.");
             }
             if(!checkIfLoginExists(name, password)){
                 String sql = String.format("""
@@ -216,7 +216,7 @@ public class DatabaseManagerImpl {
     public boolean doesCourseExist(String department, int catalog_number){
         try{
             if (connection == null || connection.isClosed()) {
-                throw new IllegalStateException("Sorry, your connection is closed right now.");
+                System.out.println("Sorry, you connection is closed right. Please try again later.");
             }
             String sql = String.format("""
                     SELECT * FROM Courses WHERE Department = "%s" AND Catalog_Number = %d;""", department, catalog_number);
@@ -240,7 +240,7 @@ public class DatabaseManagerImpl {
     public void addCourses(List<Course> courseList) {
         try {
             if (connection == null || connection.isClosed()) {
-                throw new IllegalStateException("Sorry, your connection is closed right now.");
+                System.out.println("Sorry, you connection is closed right. Please try again later.");
             }
             for(Course currentCourse : courseList) {
                 if(!doesCourseExist(currentCourse.getDepartment(), currentCourse.getCatalogNumber())) {
@@ -287,7 +287,7 @@ public class DatabaseManagerImpl {
     public void addCourse(Course course){
         try{
             if (connection == null || connection.isClosed()) {
-                throw new IllegalStateException("Sorry, your connection is closed right now.");
+                System.out.println("Sorry, you connection is closed right. Please try again later.");
             }
 
             if(!doesCourseExist(course.getDepartment(), course.getCatalogNumber())) {
@@ -311,7 +311,7 @@ public class DatabaseManagerImpl {
     public void addReview(Review review) {
         try {
             if (connection == null || connection.isClosed()) {
-                throw new IllegalStateException("Sorry, your connection is closed right now.");
+                System.out.println("Sorry, you connection is closed right. Please try again later.");
             }
             String insertQuery = String.format("""
                                 insert into Reviews (StudentName, CourseDepartment, CourseCatalogNumber, textMessage, rating)
@@ -335,7 +335,7 @@ public class DatabaseManagerImpl {
     public List<ReviewMessage> getCourseReviews(String department, int catalog_number) {
         try {
             if (connection == null || connection.isClosed()) {
-                throw new IllegalStateException("Sorry, your connection is closed right now.");
+                System.out.println("Sorry, you connection is closed right. Please try again later.");
             }
             List<ReviewMessage> reviewList = new ArrayList<>();
             statement = connection.createStatement();
@@ -359,7 +359,7 @@ public class DatabaseManagerImpl {
     public boolean hasStudentReviewedCourse(Student curStudent, Course curCourse) {
         try{
             if (connection == null || connection.isClosed()) {
-                throw new IllegalStateException("Sorry, your connection is closed right now.");
+                System.out.println("Sorry, you connection is closed right. Please try again later.");
             }
             String sql = String.format("""
                     SELECT * FROM Reviews WHERE StudentName = "%s" AND CourseDepartment = "%s" AND CourseCatalogNumber = %d;"""
@@ -383,7 +383,7 @@ public class DatabaseManagerImpl {
     public void disconnect() {
         try {
             if(connection == null) {
-                throw new IllegalStateException("Connection is already closed.");
+                System.out.println("Connection is already closed. You may exit.");
             }
             statement.close();
             connection.close();

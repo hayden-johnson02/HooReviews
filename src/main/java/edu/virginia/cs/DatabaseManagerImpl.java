@@ -3,7 +3,7 @@ package edu.virginia.cs;
 import java.sql.*;
 import java.util.*;
 
-public class DatabaseManagerImpl {
+public class DatabaseManagerImpl implements DatabaseManager {
     static DatabaseManagerImpl single_instance;
     String databaseUrl = "Reviews.sqlite3";
     Connection connection;
@@ -25,7 +25,7 @@ public class DatabaseManagerImpl {
         return single_instance;
     }
 
-    //@Override
+    @Override
     public void connect(){
         String url = "jdbc:sqlite:" + databaseUrl;
         try{
@@ -37,7 +37,7 @@ public class DatabaseManagerImpl {
             throw new IllegalStateException("Connection has already been established with database.");
         }
     }
-    //@Override
+    @Override
     public void createTables(){
         try{
             if (connection == null || connection.isClosed()) {
@@ -86,7 +86,7 @@ public class DatabaseManagerImpl {
             throw new IllegalStateException(e+" At least one of the tables (Students, Courses, Reviews) already exists");
         }
     }
-    //@Override
+    @Override
     public void clear() {
         try {
             if (connection == null || connection.isClosed()) {
@@ -104,7 +104,7 @@ public class DatabaseManagerImpl {
         }
     }
 
-    //@Override
+    @Override
     public void deleteTables() {
         try {
             if (connection == null || connection.isClosed()) {

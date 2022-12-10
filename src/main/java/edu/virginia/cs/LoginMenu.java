@@ -67,7 +67,7 @@ public class LoginMenu {
     }
 
     private void attemptNewUserLogin() {
-        System.out.println("Username and password must only be 1 word: ");
+        System.out.println("Username and password must only be 1 word and contain no spaces: ");
         System.out.print("New Username: ");
         String newUsername = scanner.next();
         System.out.print("New Password: ");
